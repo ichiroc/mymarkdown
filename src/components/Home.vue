@@ -1,6 +1,7 @@
 <template>
 <div id='home'>
-  <h1>{{msg}}</h1>
+  <h1 class='logo'><img alt="チョイメモ" src='../assets/logo.png'></h1>
+  <p class='description'>こんにちは！ちょっとしたメモを簡単にオンラインに保存できます。</p>
   <button @click='googleLogin'>Google アカウントでログイン</button>
 </div>
 </template>
@@ -22,3 +23,14 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+#home {
+  text-align: center
+}
+.logo {
+  margin-top: 3rem
+}
+.description{
+  margin: 10px;
+}
+</style>
