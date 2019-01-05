@@ -1,13 +1,13 @@
 <template>
 <!-- color=success などを使うには v-app で囲う必要がある -->
 <v-app class="editor">
-  <h1>エディター画面</h1>
   <v-container fluid class='header-container'>
     <v-layout row justify-space-between>
       <v-flex xs1>
-        <span>{{user.displayName}}</span>
+        <h1 px-0><img alt='チョイメモ' src='../assets/logo.png' class='logo'></h1>
       </v-flex>
-      <v-flex xs1>
+      <v-flex xs2>
+        <v-chip>{{user.displayName}}</v-chip>
         <v-btn @click='logout'>ログアウト</v-btn>
       </v-flex>
     </v-layout>
@@ -120,6 +120,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo {
+    width: 200px;
+}
 .header-container {
     height: 50px;
 }
