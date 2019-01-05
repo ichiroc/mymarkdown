@@ -5,14 +5,15 @@
     <button @click='logout'>ログアウト</button>
     <div class="editorWrapper">
     <div class="memoListWrapper">
+      <button class="addMemoBtn" @click="addMemo">メモの追加</button>
+      <button class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'>選択中のメモの削除</button>
+      <button class='saveMemmoBtn' @click='saveMemos'>メモの保存</button>
       <div class='memoList' v-for='(memo, index) in memos' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
         <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
+        <span>{{ formattedTime(memo.updatedAt) }}</span>
       </div>
-      <button class="addMemoBtn" @click="addMemo">メモの追加</button>
-      <button class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'>洗濯中のメモの削除</button>
-      <button class='saveMemmoBtn' @click='saveMemos'>メモの保存</button>
     </div>
-      <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
+      <textarea class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></textarea>
       <div class="preview markdown-body" v-html="preview()"></div>
     </div>
   </div>
@@ -20,6 +21,7 @@
 
 <script>
 import marked from 'marked';
+import moment from 'moment';
 
 export default {
   name: 'editor',
@@ -28,7 +30,9 @@ export default {
     return {
       memos: [
         {
-          markdown: ''
+          markdown: '',
+          createdAt: '',
+          updatedAt: null
         }
       ],
       selectedIndex: 0
@@ -56,11 +60,27 @@ export default {
     document.onkeydown = null
   },
   methods: {
+    formattedTime: function(time) {
+      return moment(time).format('YYYY/MM/DD HH:mm')
+    },
+    currentUnixTime: function() {
+      return moment().valueOf()
+    },
+    currentMemo: function() {
+      return this.memos[this.selectedIndex]
+    },
+    onMemoUpdated: function(){
+      // new Date
+      this.memos[this.selectedIndex].updatedAt = this.currentUnixTime()
+      this.saveMmoes()
+    },
     logout: function(){
       firebase.auth().signOut()
     },
     addMemo: function(){
-      this.memos.push({ markdown: '無題のメモ' })
+      this.memos = [{ markdown: '無題のメモ', createdAt: this.currentUnixTime() }, ...this.memos]
+      this.selectedIndex = 0;
+      this.onMemoUpdated()
     },
     selectMemo: function(index){
       this.selectedIndex = index;
@@ -73,6 +93,8 @@ export default {
       }
     },
     saveMemos: function() {
+      console.log('save!')
+      console.log(this.memos)
       firebase.database()
         .ref(`memos/${this.user.uid}`)
         .set(this.memos);
