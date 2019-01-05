@@ -1,1 +1,15 @@
 @import '~vuetify/dist/vuetify.min.css';
+@import 'github-markdown.css';
+
+.markdown-body {
+  ol, ul {
+    list-style-type: disc;
+  }
+  pre {
+    code {
+      color: #24292F;
+      box-shadow: none;
+      font-weight: normal;
+    }
+  }
+}
