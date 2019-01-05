@@ -5,10 +5,11 @@
     <button @click='logout'>ログアウト</button>
     <div class="editorWrapper">
     <div class="memoListWrapper">
-      <div class='memoList' v-for='(memo, index) in memos' :key='index' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
+      <div class='memoList' v-for='(memo, index) in memos' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
         <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
       </div>
       <button class="addMemoBtn" @click="addMemo">メモの追加</button>
+      <button class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'>洗濯中のメモの削除</button>
     </div>
       <textarea class="markdown" v-model="memos[selectedIndex].markdown"></textarea>
       <div class="preview" v-html="preview()"></div>
@@ -42,6 +43,12 @@ export default {
     selectMemo: function(index){
       this.selectedIndex = index;
       return marked(this.memos[this.selectedIndex].markdown);
+    },
+    deleteMemo: function() {
+      this.memos.splice(this.selectedIndex, 1)
+      if(this.selectedIndex > 0) {
+        this.selectedIndex--
+      }
     },
     preview: function() {
       return marked(this.memos[this.selectedIndex].markdown)
