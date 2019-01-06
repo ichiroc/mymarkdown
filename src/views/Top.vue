@@ -2,7 +2,9 @@
 <div id="top">
   <Home v-if='!isLogin'></Home>
   <Editor v-if='isLogin' :user='userData'></Editor>
-  <router-link :to='{ name: "terms" }'>利用規約</router-link>
+  <div class='footer'>
+    <router-link class='terms-link' :to='{ name: "terms" }'>利用規約</router-link>
+  </div>
 </div>
 </template>
 
@@ -40,5 +42,8 @@ export default {
 <style lang="scss" scoped>
 #top{
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+.footer{
+    text-align: right
 }
 </style>

@@ -6,15 +6,15 @@
       <v-flex xs1>
         <h1 px-0><img alt='チョイメモ' src='../assets/logo.png' class='logo'></h1>
       </v-flex>
-      <v-flex xs2>
+      <v-flex xs3>
         <v-chip>{{user.displayName}}</v-chip>
         <v-btn @click='logout'>ログアウト</v-btn>
       </v-flex>
     </v-layout>
     <v-layout class="editorWrapper">
       <v-flex class="memoListWrapper" xs2 px-1>
-        <v-btn color='success' class='addMemoBtn' @click='addMemo'>メモの追加</v-btn>
-        <v-btn color='error' class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'>選択中のメモの削除</v-btn>
+        <v-btn fab color='success' class='addMemoBtn' @click='addMemo'><v-icon>add</v-icon></v-btn>
+        <v-btn fab color='error' class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'><v-icon>clear</v-icon></v-btn>
         <v-list two-line>
           <template v-for='(memo, index) in memos'>
             <v-list-tile class='memoList' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
@@ -28,7 +28,7 @@
         </v-list>
       </v-flex>
       <v-flex xs5 px-1>
-        <textarea class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></textarea>
+        <v-textarea outline height='500px' class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></v-textarea>
       </v-flex>
       <v-flex xs5 px-1>
         <div class="preview markdown-body" v-html="preview()"></div>
@@ -130,29 +130,17 @@ export default {
 .logo {
     width: 200px;
 }
-.header-container {
-    height: 50px;
-}
 .editorWrapper{
     display: flex;
 }
 .markdown {
-    height: 500px;
     width: 100%;
-}
-.memoListWrapper {
-    border-top: 1px solid #000;
+    margin-top: 66px;
 }
 .memoList {
     *[data-selected="true"] {
         font-weigth: bold;
     }
-}
-.addMemoBtn {
-    margin-top: 20px;
-}
-.deleteMemoBtn {
-    margin: 10px;
 }
 .memoTitle {
     height: 1.5em;
@@ -161,6 +149,8 @@ export default {
     overflow: hidden;
 }
 .preview {
+    margin-top: 90px;
+    padding-top: 7px;
     text-align: left;
 }
 </style>
