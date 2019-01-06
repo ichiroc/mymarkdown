@@ -15,10 +15,17 @@
       <v-flex class="memoListWrapper" xs2 px-1>
         <v-btn color='success' class='addMemoBtn' @click='addMemo'>メモの追加</v-btn>
         <v-btn color='error' class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'>選択中のメモの削除</v-btn>
-        <div class='memoList' v-for='(memo, index) in memos' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
-          <p class="memoTitle">{{ displayTitle(memo.markdown) }}</p>
-          <span>{{ formattedTime(memo.updatedAt) }}</span>
-        </div>
+        <v-list two-line>
+          <template v-for='(memo, index) in memos'>
+            <v-list-tile class='memoList' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
+              <v-list-tile-content>
+                <v-list-tile-title class="memoTitle">{{ displayTitle(memo.markdown) }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ formattedTime(memo.updatedAt) }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider />
+          </template>
+        </v-list>
       </v-flex>
       <v-flex xs5 px-1>
         <textarea class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></textarea>
@@ -136,16 +143,9 @@ export default {
 .memoListWrapper {
     border-top: 1px solid #000;
 }
-.memoList{
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: left;
-    border-bottom: 1px solid #000;
-    &:nth-child(even) {
-        background-color: #ccc;
-    }
-    &[data-selected="true"] {
-        background-color: #ccf;
+.memoList {
+    *[data-selected="true"] {
+        font-weigth: bold;
     }
 }
 .addMemoBtn {
