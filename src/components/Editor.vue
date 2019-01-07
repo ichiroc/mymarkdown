@@ -17,7 +17,7 @@
         <v-btn fab color='error' class='deleteMemoBtn' @click='deleteMemo' v-if='memos.length > 1'><v-icon>clear</v-icon></v-btn>
         <v-list two-line>
           <template v-for='(memo, index) in memos'>
-            <v-list-tile class='memoList' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
+            <v-list-tile v-bind:class='{ "primary--text": index==selectedIndex }' class='memoList' @click='selectMemo(index)' :data-selected='index == selectedIndex'>
               <v-list-tile-content>
                 <v-list-tile-title class="memoTitle">{{ displayTitle(memo.markdown) }}</v-list-tile-title>
                 <v-list-tile-sub-title>{{ formattedTime(memo.updatedAt) }}</v-list-tile-sub-title>
@@ -28,7 +28,7 @@
         </v-list>
       </v-flex>
       <v-flex xs5 px-1>
-        <v-textarea outline height='500px' class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></v-textarea>
+        <v-textarea outline placeholder='write down something here.' height='500px' class="markdown" @keyup='onMemoUpdated' v-model="memos[selectedIndex].markdown"></v-textarea>
       </v-flex>
       <v-flex xs5 px-1>
         <div class="preview markdown-body" v-html="preview()"></div>
@@ -110,6 +110,7 @@ export default {
       if(this.selectedIndex > 0) {
         this.selectedIndex--
       }
+      this.saveMemos()
     },
     saveMemos: function() {
       firebase.database()
@@ -136,11 +137,6 @@ export default {
 .markdown {
     width: 100%;
     margin-top: 66px;
-}
-.memoList {
-    *[data-selected="true"] {
-        font-weigth: bold;
-    }
 }
 .memoTitle {
     height: 1.5em;
